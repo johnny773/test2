@@ -24,7 +24,7 @@ job 1:
 job 2:
   stage: test
   variables:
-    ERROR_PATH: /tmp/example_pipeline_testresults  
+    ERROR_PATH: /tmp/testresults  
   script:
   # created directory for errored pages
   - mkdir -p ${ERROR_PATH} || true
@@ -32,10 +32,7 @@ job 2:
   - docker pull $CONTAINER_IMAGE
   # start the previously built container
   - docker run -d $CONTAINER_IMAGE -v ${ERROR_PATH}:/usr/src/app/package-lock.json
-  # echo output of test results
-  - ls ${ERROR_PATH}
-  # - cat ${ERROR_PATH}/usr/src/app/package-lock.json
-  # Print app output
-  # - docker logs $(docker ps --latest --quiet)
+  # Print logs
+  - docker logs $(docker ps --latest --quiet)
   only:
   - master
