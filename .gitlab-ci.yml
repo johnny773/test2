@@ -34,6 +34,7 @@ job 2:
   # - docker run -d $CONTAINER_IMAGE --name=john-node --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output tail -f /dev/null
   - docker run -d $CONTAINER_IMAGE --name=john-node tail -f /dev/null
   - sleep 10
+  - docker ps
   - docker exec $(docker ps --latest --quiet) curl -i http://docker:8080/status
   
   # - docker run -d $CONTAINER_IMAGE tail -f /dev/null
