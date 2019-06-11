@@ -35,6 +35,6 @@ job 2:
   - docker run -d $CONTAINER_IMAGE tail -f /dev/null
   # echo output of test results
   # Print app output
-  - docker logs $CONTAINER_IMAGE
+  - docker logs $(docker ps --latest --quiet)
   only:
   - master
