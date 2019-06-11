@@ -32,7 +32,7 @@ job 2:
   - docker pull $CONTAINER_IMAGE
   # start the previously built container
   # - docker run -d $CONTAINER_IMAGE --name=john-node --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output
-  - docker run -d $CONTAINER_IMAGE --name=john-node
+  - docker run -d $CONTAINER_IMAGE tail -f /dev/null
   # echo output of test results
   # - docker container inspect --format='{{json .State.Health}}' $CONTAINER_IMAGE
   - docker exec $(docker ps --latest --quiet) curl -i http://localhost:8080/status
