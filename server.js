@@ -12,6 +12,8 @@ const app = express();
 // Get app version from package.json
 var pjson = require('./package.json');
 
+response.setHeader('Content-Type', 'application/json');
+
 // Get Commit SHA
 revision = require('child_process')
   .execSync('git rev-parse HEAD')
@@ -24,7 +26,7 @@ app.get('/', (req, res) => {
 app.get("/status", (req, res, next) => {
     res.json({version: pjson.version,
               lastcommitsha: revision,
-              description: "pre-interview technical test"
+              description: 'pre-interview technical test'
     });
 });
 
