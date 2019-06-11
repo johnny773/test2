@@ -28,9 +28,10 @@ job 2:
   script:
   # created directory for errored pages
   - mkdir -p ${ERROR_PATH} || true
-   # start the previously built container
-  - docker run -d --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output --name $CONTAINER_IMAGE:latest
+  
+  # start the previously built container
+  - docker run -d $CONTAINER_IMAGE:latest --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output
   # actually run tests
-  - docker exec $CONTAINER_IMAGE:latest curl -i http://localhost:49160/status
+  - docker exec $CONTAINER_IMAGE:latest curl -i http://localhost:8080/status
   only:
   - master
