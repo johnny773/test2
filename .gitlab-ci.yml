@@ -6,10 +6,10 @@ variables:
   IMAGE_BASE_NAME: node
   IMAGE: john/$IMAGE_BASE_NAME:$CI_BUILD_REF
   CONTAINER_NAME: 'john-node-pipeline'
-  
 
 before_script:
 - echo $dockerTag
+- docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
 
 build:
   type: build
