@@ -22,14 +22,10 @@ build-image:
   script:
     - docker build -t $IMAGE .
     - docker run -p 49160:8080 -d john/node
-  tags:
-    - docker
-
-test-image:
-  stage: test
-  script:
     - echo "App test CURL"
     - sleep 45
     - curl -i http://localhost:49160/status
     - echo "content"
     - exit 0
+  tags:
+    - docker
