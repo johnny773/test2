@@ -13,8 +13,6 @@ before_script:
 
 build:
   type: build
-  tags:
-  - docker-in-docker-pure-builder
   script:
   # build test images
   - docker build -t $IMAGE .
