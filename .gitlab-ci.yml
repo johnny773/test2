@@ -4,8 +4,28 @@ cache:
   paths:
   - node_modules/
 
+test:lint:
+  script:
+    - npm run lint
+
+test:vulnerabilities:
+  script:
+    - npm run vuln-test
+
 test:
   script:
    - npm install
    - npm run test
 
+variables:
+  IMAGE: john/node
+
+build-image:
+  stage: build-image
+  image: docker
+  before_script: []
+  script:
+    - docker build -t $IMAGE .
+    - docker push $IMAGE
+  tags:
+    - docker
