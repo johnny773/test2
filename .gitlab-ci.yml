@@ -21,7 +21,7 @@ variables:
   IMAGE: john/node
 
 build-image:
-  stage: build-image
+  stage: build
   image: docker
   before_script: []
   script:
