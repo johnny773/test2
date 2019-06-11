@@ -22,6 +22,12 @@ build:
 services:
   - docker:dind
 
+debug:
+  stage: analyze
+  script:
+    - docker images
+    - docker info
+
 test:
   type: test
   variables:
