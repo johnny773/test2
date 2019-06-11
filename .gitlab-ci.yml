@@ -1,32 +1,38 @@
-image: node:latest
-
-cache:
-  paths:
-  - node_modules/
-
-test:
-  script:
-   - npm install
-   - npm run test
+image: docker:latest
 
 variables:
-  IMAGE: john/node
+  dockerTag: '$CI_BUILD_REF'
+  DOCKER_REPO: customregistry
+  IMAGE_BASE_NAME: node
+  IMAGE: $EVISTA_DOCKER_REPO/$IMAGE_BASE_NAME:$CI_BUILD_REF
+  CONTAINER_NAME: 'john-node-pipeline'
+  
 
-services:
-  - docker:dind
+before_script:
+- echo $dockerTag
 
-build-image:
-  stage: build
-  image: docker
-  before_script: []
-  script:
-    - docker build -t $IMAGE .
-    - docker run -p 49160:8080 -d john/node
-    - apk update && apk add curl curl-dev bash
-    - echo "App test CURL"
-    - sleep 10
-    - curl -i http://localhost:49160/status
-    - echo "content"
-    - exit 0
+build:
+  type: build
   tags:
-    - docker
+  - docker-in-docker-pure-builder
+  script:
+  # build test images
+  - docker build -t $IMAGE .
+  only:
+  - master
+
+test:
+  type: test
+  variables:
+    ERROR_PATH: /tmp/example_pipeline_testresults
+  tags:
+  - docker-in-docker-builder  
+  script:
+  # created directory for errored pages
+  - mkdir -p ${ERROR_PATH} || true
+   # start the previously built container
+  - docker run -d --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output --name ${CONTAINER_NAME} ${IMAGE}
+  # actually run tests
+  - docker exec ${CONTAINER_NAME} curl -i http://localhost:49160/status
+  only:
+  - master
