@@ -4,14 +4,6 @@ cache:
   paths:
   - node_modules/
 
-test:lint:
-  script:
-    - npm run lint
-
-test:vulnerabilities:
-  script:
-    - npm run vuln-test
-
 test:
   script:
    - npm install
@@ -37,6 +29,7 @@ test-image:
   stage: test
   script:
     - echo "App test CURL"
+    - sleep 45
     - curl -i http://localhost:49160/status
     - echo "content"
     - exit 0
