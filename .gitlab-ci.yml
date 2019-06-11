@@ -21,12 +21,13 @@ build:
   only:
   - master
 
+services:
+  - docker:dind
+
 test:
   type: test
   variables:
-    ERROR_PATH: /tmp/example_pipeline_testresults
-  tags:
-  - docker-in-docker-builder  
+    ERROR_PATH: /tmp/example_pipeline_testresults  
   script:
   # created directory for errored pages
   - mkdir -p ${ERROR_PATH} || true
