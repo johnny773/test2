@@ -25,7 +25,7 @@ Gitlab CI Environments
 
 The Gitlab yaml pipeline is defined in two job functions the first job to build and stage the node.js docker image and the second stage to run tests and verify image. Execution is run as docker in docker.
 
-Gitlab test through output of docker container logs displayed in gitlab logs. Also local mount on filesystem is referenced from the docker run command to output test results.
+Gitlab test through output of docker container logs displayed in gitlab logs. Gitlab closes the docker container as soon as complete therefore included additional delay ping test on execution of run.
 
 Gitlab tested builds from the pipeline are pushed to gitlab container registry and tagged with commit ref.
 
