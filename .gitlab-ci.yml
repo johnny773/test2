@@ -31,10 +31,23 @@ job 2:
   # pull build image
   - docker pull $CONTAINER_IMAGE
   # start the previously built container
-  - docker run -d $CONTAINER_IMAGE --name=john-node --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output
+  - docker run -p 49160:8080 -d $CONTAINER_IMAGE --name=john-node --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output
   # pause until container runs
   - sleep 10 
   # actually run tests
-  - docker exec $(docker ps --latest --quiet) curl -i http://localhost:8080/status
+  - apk update && apk add curl curl-dev bash
+  - echo "App test CURL"
+  - curl -i http://localhost:49160/status
+  - echo "content"
+  - exit 0 
+  # - docker exec $(docker ps --latest --quiet) curl -i http://localhost:8080/status
   only:
   - master
+
+
+    - apk update && apk add curl curl-dev bash
+    - echo "App test CURL"
+    - sleep 10
+    - curl -i http://localhost:49160/status
+    - echo "content"
+    - exit 0
