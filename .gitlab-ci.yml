@@ -1,34 +1,36 @@
-image: docker:latest
-
+image: docker:git
+ 
+services:
+- docker:dind
+ 
 variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  CONTAINER_IMAGE: registry.gitlab.com/johnny773/$CI_PROJECT_NAME
   dockerTag: '$CI_BUILD_REF'
-  DOCKER_REPO: customregistry
-  IMAGE_BASE_NAME: node
-  IMAGE: john/$IMAGE_BASE_NAME:$CI_BUILD_REF
-  CONTAINER_NAME: 'john-node-pipeline'
-
+ 
 before_script:
-- echo $dockerTag
-- docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-
-build:
-  type: build
+  - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+stages:
+  - build and stage
+  - test
+ 
+job 1:
+  stage: build and stage
   script:
-  # build test images
-  - docker build -t $IMAGE .
-  only:
-  - master
+   - docker build -t $CONTAINER_IMAGE:$CI_COMMIT_SHA .
+   - docker push $CONTAINER_IMAGE:$CI_COMMIT_SHA
 
-test:
-  type: test
+job 2:
+  stage: test
   variables:
     ERROR_PATH: /tmp/example_pipeline_testresults  
   script:
   # created directory for errored pages
   - mkdir -p ${ERROR_PATH} || true
    # start the previously built container
-  - docker run -d --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output --name ${CONTAINER_NAME} ${IMAGE}
+  - docker run -d --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output --name $CONTAINER_IMAGE:$CI_COMMIT_SHA
   # actually run tests
-  - docker exec ${CONTAINER_NAME} curl -i http://localhost:49160/status
+  - docker exec $CONTAINER_IMAGE:$CI_COMMIT_SHA curl -i http://localhost:49160/status
   only:
   - master
