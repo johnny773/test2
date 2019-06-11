@@ -43,11 +43,3 @@ job 2:
   # - docker exec $(docker ps --latest --quiet) curl -i http://localhost:8080/status
   only:
   - master
-
-
-    - apk update && apk add curl curl-dev bash
-    - echo "App test CURL"
-    - sleep 10
-    - curl -i http://localhost:49160/status
-    - echo "content"
-    - exit 0
