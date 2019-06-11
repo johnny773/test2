@@ -29,6 +29,14 @@ build-image:
   before_script: []
   script:
     - docker build -t $IMAGE .
-    - docker push $IMAGE
+    - docker run -p 49160:8080 -d john/node
   tags:
     - docker
+
+test-image:
+  stage: test
+  script:
+    - echo "App test CURL"
+    - curl -i http://localhost:49160/status
+    - echo "content"
+    - exit 0
