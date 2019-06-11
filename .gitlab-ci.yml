@@ -11,6 +11,7 @@ test:
 
 variables:
   IMAGE: john/node
+  DOCKER_HOST: tcp://docker:49160
 
 services:
   - docker:dind
