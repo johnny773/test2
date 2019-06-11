@@ -31,9 +31,10 @@ job 2:
   # pull build image
   - docker pull $CONTAINER_IMAGE
   # start the previously built container
-  - docker run -d $CONTAINER_IMAGE --name=john-node --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output
+  - docker run -d $CONTAINER_IMAGE -v ${ERROR_PATH}:/usr/src/app/package-lock.json
   # echo output of test results
+  - cat ${ERROR_PATH}
   # Print app output
-  - docker logs $(docker ps --latest --quiet)
+  # - docker logs $(docker ps --latest --quiet)
   only:
   - master
