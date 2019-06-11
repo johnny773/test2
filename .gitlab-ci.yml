@@ -4,7 +4,7 @@ variables:
   dockerTag: '$CI_BUILD_REF'
   DOCKER_REPO: customregistry
   IMAGE_BASE_NAME: node
-  IMAGE: $EVISTA_DOCKER_REPO/$IMAGE_BASE_NAME:$CI_BUILD_REF
+  IMAGE: john/$IMAGE_BASE_NAME:$CI_BUILD_REF
   CONTAINER_NAME: 'john-node-pipeline'
   
 
