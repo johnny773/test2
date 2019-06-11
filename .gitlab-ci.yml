@@ -19,7 +19,6 @@ test:
 
 variables:
   IMAGE: john/node
-  DOCKER_HOST: tcp://localhost:2375
 
 services:
   - docker:dind
@@ -29,7 +28,6 @@ build-image:
   image: docker
   before_script: []
   script:
-    - export DOCKER_HOST="tcp://localhost:2375"
     - docker build -t $IMAGE .
     - docker push $IMAGE
   tags:
