@@ -33,7 +33,8 @@ job 2:
   # start the previously built container
   - docker run -d $CONTAINER_IMAGE -v ${ERROR_PATH}:/usr/src/app/package-lock.json
   # echo output of test results
-  - cat ${ERROR_PATH}/usr/src/app/package-lock.json
+  - ls ${ERROR_PATH}
+  # - cat ${ERROR_PATH}/usr/src/app/package-lock.json
   # Print app output
   # - docker logs $(docker ps --latest --quiet)
   only:
