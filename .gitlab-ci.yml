@@ -23,15 +23,11 @@ job 1:
 
 job 2:
   stage: test
-  variables:
-    ERROR_PATH: /tmp/testresults  
   script:
-  # created directory for errored pages
-  - mkdir -p ${ERROR_PATH} || true
   # pull build image
   - docker pull $CONTAINER_IMAGE
   # start the previously built container
-  - docker run -d $CONTAINER_IMAGE -v ${ERROR_PATH}:/usr/src/app/package-lock.json
+  - docker run -d $CONTAINER_IMAGE ping -c 20 127.0.0.1
   # Print logs
   - docker logs $(docker ps --latest --quiet)
   only:
