@@ -31,7 +31,9 @@ job 2:
   # pull build image
   - docker pull $CONTAINER_IMAGE
   # start the previously built container
-  - docker run -p 49160:8080 -d $CONTAINER_IMAGE --name=john-node --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output tail -f /dev/null
+  # - docker run -d $CONTAINER_IMAGE --name=john-node --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output tail -f /dev/null
+  - docker run -d $CONTAINER_IMAGE --name=john-node tail -f /dev/null
+  - sleep 10
   - docker exec $(docker ps --latest --quiet) curl -i http://docker:8080/status
   
   # - docker run -d $CONTAINER_IMAGE tail -f /dev/null
