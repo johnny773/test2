@@ -31,8 +31,8 @@ job 2:
   # pull build image
   - docker pull $CONTAINER_IMAGE
   # start the previously built container
-  - docker run -d $CONTAINER_IMAGE --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output
+  - docker run -d $CONTAINER_IMAGE --name=john-node --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output
   # actually run tests
-  - docker exec $CONTAINER_IMAGE curl -i http://localhost:8080/status
+  - docker exec john-node curl -i http://localhost:8080/status
   only:
   - master
