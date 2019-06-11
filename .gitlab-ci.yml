@@ -6,7 +6,7 @@ services:
 variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
-  CONTAINER_IMAGE: registry.gitlab.com/johnny773/$CI_PROJECT_NAME
+  CONTAINER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
   dockerTag: '$CI_BUILD_REF'
  
 before_script:
@@ -18,8 +18,8 @@ stages:
 job 1:
   stage: build and stage
   script:
-   - docker build -t $CONTAINER_IMAGE:$CI_COMMIT_SHA .
-   - docker push $CONTAINER_IMAGE:$CI_COMMIT_SHA
+   - docker build -t $CONTAINER_IMAGE .
+   - docker push $CONTAINER_IMAGE
 
 job 2:
   stage: test
@@ -28,10 +28,11 @@ job 2:
   script:
   # created directory for errored pages
   - mkdir -p ${ERROR_PATH} || true
-  
+  # pull build image
+  - docker pull $CONTAINER_IMAGE
   # start the previously built container
-  - docker run -d $CONTAINER_IMAGE:$CI_COMMIT_SHA --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output
+  - docker run -d $CONTAINER_IMAGE --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output
   # actually run tests
-  - docker exec $CONTAINER_IMAGE:$CI_COMMIT_SHA curl -i http://localhost:8080/status
+  - docker exec $CONTAINER_IMAGE curl -i http://localhost:8080/status
   only:
   - master
