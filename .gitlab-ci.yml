@@ -33,8 +33,8 @@ job 2:
   # start the previously built container
   - docker run -d $CONTAINER_IMAGE --name=john-node --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output
   # echo output of test results
-  - echo ${ERROR_PATH}:/app/tests/_output
+  - cat ${ERROR_PATH}:/app/tests/_output
   # Print app output
-  - sudo docker logs $(docker ps --latest --quiet)
+  - docker logs $(docker ps --latest --quiet)
   only:
   - master
