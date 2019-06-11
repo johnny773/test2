@@ -33,7 +33,7 @@ job 2:
   # start the previously built container
   - docker run -d $CONTAINER_IMAGE --name=john-node --add-host 'localhost localhost.localdomain localtest:127.0.0.1' -v ${ERROR_PATH}:/app/tests/_output "curl -i --fail http://localhost:8080/status || exit 1" --health-interval=5s --timeout=3s
   # echo output of test results
-  - echo /tmp/example_pipeline_testresults 
+  - docker inspect --format=&apos;{{json .State.Health}}&apos; john-node
   # - docker exec $(docker ps --latest --quiet) curl -i http://localhost:8080/status
   only:
   - master
